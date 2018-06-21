@@ -1,0 +1,29 @@
+.item {
+	border: #4C4C4CFF 2px solid;
+  	border-radius: 1rem;
+  	padding: 1rem;
+  	margin-top: auto;
+  	margin-bottom: auto;
+  	margin-left: 1rem;
+  	margin-right: 1rem;
+}
+
+.item-image {
+	width: 18rem;
+  	border-radius: 1rem;
+  	margin-left: auto;
+  	margin-right: auto;
+}
+
+.item-content {
+	margin-top: 1rem;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+}
+
+p {
+	color: #808080FF;
+	font-size: 1rem;
+	font-style: italic;
+}
