@@ -27,3 +27,13 @@ p {
 	font-size: 1rem;
 	font-style: italic;
 }
+
+.detail {
+	margin-left: 2rem;
+	margin-right: 1rem;
+}
+
+.cart {
+	margin-left: 1rem;
+	margin-right: 1rem;
+}

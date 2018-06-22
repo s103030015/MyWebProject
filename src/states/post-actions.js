@@ -105,18 +105,9 @@ export function createComment(id, username, text) {
 };
 
 /*  Post item */
-export function toggleTooltip(id) {
+export function toggleTooltip() {
     return {
-        type: '@POST_ITEM/TOGGLE_TOOLTIP',
-        id
-    };
-};
-
-export function setTooltipToggle(id, toggle) {
-    return {
-        type: '@POST_ITEM/SET_TOOLTIP_TOGGLE',
-        id,
-        toggle
+        type: '@POST_ITEM/TOGGLE_TOOLTIP'
     };
 };
 
@@ -139,5 +130,32 @@ export function setInputName(name) {
     return {
         type: '@COMMENT_FORM/INPUT_NAME',
         name
+    };
+};
+
+/*  Post Form */
+export function inputProductName(value) {
+    return {
+        type: '@POST_FORM/INPUT_ITEM_NAME',
+        value
+    };
+};
+export function inputDescription(value) {
+    return {
+        type: '@POST_FORM/INPUT_ITEM_TEXT',
+        value
+    };
+};
+export function inputProductPrice(value) {
+    return {
+        type: '@POST_FORM/INPUT_ITEM_PRICE',
+        value
+    };
+};
+
+export function inputDanger(danger) {
+    return {
+        type: '@POST_FORM/INPUT_DANGER',
+        danger
     };
 };

@@ -1,8 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Media, Button} from 'reactstrap';
+import {
+    Media, 
+    Button, 
+    Modal, 
+    ModalHeader, 
+    ModalBody,  
+    ModalFooter
+} from 'reactstrap';
 import {connect} from 'react-redux';
 
+import {toggleTooltip} from 'states/post-actions.js'; 
 import './Item.css';
 
 class Item extends React.Component {
@@ -12,52 +20,63 @@ class Item extends React.Component {
         description: PropTypes.string,
         price: PropTypes.number,
         total: PropTypes.number,
+        comments: PropTypes.array,
+        toggleOpen: PropTypes.bool,
+        dispatch: PropTypes.func
     };
     
     constructor(props) {
         super(props);
 
-        this.handleClick = this.handleClick.bind(this);
+        this.state = {
+            modal: false
+        };
+        this.handleDetailToggle = this.handleDetailToggle.bind(this);
     }
 
-    render() {
-    /*
-        const {
-          id,
-          name,
-          description,
-          price,
-          total,
-        } = this.props;
-    */
+
+
+    render() { 
+        const {id, name, description, price, total, comments} = this.props;
+        const toggleOpen = this.props;
+
         return (
             <div className='item' onClick={this.handleClick}>
                 <div>
                     <Media>
-                        <Media className="item-image" object src='images/chicken.jpg' alt="Generic placeholder image" />
-                        {/*<Media className="item-image" object src={'images/'+name+'.jpg'/> */}
+                        <Media className="item-image" object src={'images/' + name + '.jpg'}/>
                     </Media>
                 </div>
                 <div className="item-content">
-                    <h2>好吃炸雞</h2>
-                    {/*<h2>{name}</h2> */}
-                    <p className="price">120元</p>
-                    {/*<p>{price}</p> */}
-                    <p className="number">目前人數:10人</p>
-                    {/*<p>{'目前人數：'+total}</p> */}
+                    <h2>{name}</h2>
+                    <p>{price}</p>
+                    <p>{'目前人數：'+ total}</p>
                 </div>
+                <Button className="detail" color="info" onClick={this.handleDetailToggle}>Detail</Button>
+                <Modal isOpen={this.state.modal} toggle={this.handleDetailToggle}>
+                    <ModalHeader toggle={this.handleDetailToggle}>Description</ModalHeader>
+                    <ModalBody>
+                        <p>{description}</p>     
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button color="primary" onClick={this.handleDetailToggle}>Ok</Button>{''}
+                    </ModalFooter>
+                </Modal>
+                <Button className="cart" color="secondary">加入購物車</Button>
             </div>
         );
     }
 
-    handleClick(e) {
-        console.log("Click!");
-
-        e.preventDefault();
-        window.location = '/info';
+    handleDetailToggle() {
+        this.setState({
+            modal: !this.state.modal
+        });
+        //this.props.dispatch(toggleTooltip());
+        //console.log(this.props.toggleOpen);
     }
 }
 
 export default connect((state) => {
-    //name: state.post.name[ownProps.id],
+    //name: state.post.name[ownProps.id]
+    toggleOpen: state.postItem.toggleOpen
 })(Item);

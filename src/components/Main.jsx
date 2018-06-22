@@ -21,7 +21,8 @@ import Login from 'components/Login.jsx';
 import Home from 'components/Home.jsx';
 import ItemList from 'components/ItemList.jsx';
 import Item from 'components/Item.jsx';
-import Info from 'components/Info.jsx';
+import UserPage from 'components/UserPage.jsx';
+import {setSearchText, listPosts} from 'states/post-actions.js';
 
 import {
   toggleNavbar, 
@@ -44,7 +45,7 @@ class Main extends React.Component {
   }
 
   render() {
-    const {navbarToggle, signInToggle, loginState} = this.props;
+    const {navbarToggle, loginState} = this.props;
     
     return (
       <Router>
@@ -79,7 +80,7 @@ class Main extends React.Component {
                         <ItemList />
                     )}/>
             <Route exact path="/cart" render={() => (
-                        <Info />
+                        <Item />
                     )}/>
             <Route exact path="/login" render={() => (
                         <Login />
@@ -95,5 +96,6 @@ class Main extends React.Component {
 }
 
 export default connect(state => ({
-  ...state.main
+  ...state.main,
+  searchText: state.searchText
 }))(Main);

@@ -8,37 +8,23 @@ import {
   FormGroup, 
   Label, 
   Input, 
-  FormText
+  FormText,
+  Modal, ModalHeader, ModalBody, ModalFooter
 } from 'reactstrap';
+import {toggleSignIn, logout} from 'states/main-actions.js'; 
 import './Login.css';
-/*
-import {toggleNavbar, toggleSignIn, changeLoginState} from 'states/main-actions.js';
-import {
-  registerInputUserid,
-  registerInputPassword,
-  registerInputName,
-  registerDangerInputUserid,
-  registerDangerInputPassword,
-  registerDangerInputName,
-  registerReset,
-  inputConflictUserid,
-  inputConflictName,
-  checkUseridAvailability,
-  login,
-  loginCookie,
-  logout
-} from 'states/login-actions.js';
-import {userLogin} from 'states/user-actions.js';
-*/
 
 class Login extends React.Component {
 
   constructor(props) {
     super(props);
+
+    this.handleSignInToggle = this.handleSignInToggle.bind(this);
   }
 
+
   render() {
-    //const {signInToggle, loginState} = this.props;
+    const {signInToggle, loginState} = this.props;
     const {
       user_id_input_danger,
       password_input_danger,
@@ -58,8 +44,8 @@ class Login extends React.Component {
           <div className='login'>
             <Form className='myform'>
               <FormGroup>
-                <Label for="username">Username</Label>
-                <Input type="email" name="email" id="username" placeholder="your email" />
+                <Label for="userid">User ID</Label>
+                <Input type="email" name="email" id="userid" placeholder="your email" />
               </FormGroup>
               <FormGroup>
                 <Label for="password">Password</Label>
@@ -67,14 +53,44 @@ class Login extends React.Component {
               </FormGroup>
               <div className='btn'>
                 <Button color='primary'>Submit</Button>
-                <Button color='link'>Not a user?</Button>
+                <Button color="link" onClick={this.handleSignInToggle}>Not a User?</Button>
               </div>
             </Form>
+            <div>
+              <Modal isOpen={signInToggle} toggle={this.handleSignInToggle}>
+                <ModalHeader toggle={this.handleSignInToggle}>Register</ModalHeader>
+                  <ModalBody>
+                    <Form>
+                      <FormGroup>
+                        <Label for="userid">User ID</Label>
+                        <Input type="email" name="userid" id="userid" placeholder="your email" />
+                      </FormGroup>
+                      <FormGroup>
+                        <Label for="password">Password</Label>
+                        <Input type="password" name="password" id="password" placeholder="enter your password" />
+                      </FormGroup>
+                      <FormGroup>
+                        <Label for="username">Username</Label>
+                        <Input type="text" name="username" id="username" placeholder="your nickname here" />
+                      </FormGroup>
+                    </Form>                 
+                  </ModalBody>
+                <ModalFooter>
+                  <Button color="secondary" onClick={this.handleSignInToggle}>Cancel</Button>
+                  <Button color="primary" onClick={this.handleSignInToggle}>Submit</Button>
+                </ModalFooter>
+              </Modal>
+            </div>
           </div>
       </Router>
     );
   }
+
+  handleSignInToggle() {
+    this.props.dispatch(toggleSignIn());
+  }
 }
 
 export default connect(state => ({
+  signInToggle: state.main.signInToggle
 }))(Login);

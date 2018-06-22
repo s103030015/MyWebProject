@@ -1,5 +1,4 @@
 /* Search text */
-
 export function searchText(state = '', action) {
     switch (action.type) {
         case '@SEARCH_TEXT/SET_SEARCH_TEXT':
@@ -64,7 +63,7 @@ export function post(state = initPostState, action) {
 
 /* Post item */
 const initPostItemState = {
-    tooltipOpen: {},
+    toggleOpen: false,
     commentOpen: {}
 };
 
@@ -73,18 +72,7 @@ export function postItem(state = initPostItemState, action) {
         case '@POST_ITEM/TOGGLE_TOOLTIP':
             return {
                 ...state,
-                tooltipOpen: {
-                    ...state.tooltipOpen,
-                    [action.id]: state.tooltipOpen[action.id] ? false : true
-                }
-            };
-        case '@POST_ITEM/SET_TOOLTIP_TOGGLE':
-            return {
-                ...state,
-                tooltipOpen: {
-                    ...state.tooltipOpen,
-                    [action.id]: action.toggle
-                }
+                toggleOpen: !state.toggleOpen
             };
         case '@POST_ITEM/COMMENT_TOGGLE':
             return{
@@ -116,6 +104,40 @@ export function commentForm(state = initCommentFormState, action) {
             return {
                 ...state,
                 inputName: action.name
+            };
+        default:
+            return state;
+    }
+}
+
+/* only for create */
+const initPostFormState = {
+    inputItemName: '',
+    inputItemText: '',
+    inputItemPrice: '',
+    inputDanger: false,
+};
+export function postForm(state = initPostFormState, action) {
+    switch (action.type) {
+        case '@POST_FORM/INPUT_ITEM_NAME':
+            return {
+                ...state,
+                inputItemName: action.value
+            };
+        case '@POST_FORM/INPUT_ITEM_TEXT':
+            return {
+                ...state,
+                inputItemText: action.value
+            };
+        case '@POST_FORM/INPUT_ITEM_PRICE':
+            return {
+                ...state,
+                inputItemPrice: action.value
+            };
+        case '@POST_FORM/INPUT_DANGER':
+            return {
+                ...state,
+                inputDanger: action.danger
             };
         default:
             return state;

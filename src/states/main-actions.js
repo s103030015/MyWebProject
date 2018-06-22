@@ -3,6 +3,7 @@ export function toggleNavbar() {
   return {type: '@MAIN/TOGGLE_NAVBAR'};
 }
 
+/* toggle */
 export function toggleSignIn() {
   return {type: '@MAIN/TOGGLE_SIGNIN'};
 }
