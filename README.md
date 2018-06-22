@@ -1,6 +1,6 @@
 # MyWebProject #
-## Client-side code ## </br>
-### 目前是團購的方向 ### </br>
+## Client-side code </br>
+### 目前是團購的方向 </br>
 
 ### 目前有的東西：</br>
 login, register --> user_id, password, username </br>
