@@ -1,5 +1,4 @@
 /* User */
-
 const initUserState = {
   current_user_id: '',
   current_name: ''

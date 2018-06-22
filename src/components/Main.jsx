@@ -40,12 +40,11 @@ class Main extends React.Component {
     super(props);
 
     this.searchEl = null;
-
     this.handleNavbarToggle = this.handleNavbarToggle.bind(this);
   }
 
   render() {
-    const {signInToggle, loginState} = this.props;
+    const {navbarToggle, signInToggle, loginState} = this.props;
     
     return (
       <Router>
@@ -55,7 +54,7 @@ class Main extends React.Component {
                     <Navbar color='faded' light expand="md">
                       <NavbarToggler onClick={this.handleNavbarToggle}/>
                       <NavbarBrand className='text-info' href="/">NexShop</NavbarBrand>
-                      <Collapse isOpen={NavbarToggler} navbar>
+                      <Collapse isOpen={navbarToggle} navbar>
                           <Nav navbar>
                               <NavItem>
                                   <NavLink tag={Link} to='/items'>食品</NavLink>

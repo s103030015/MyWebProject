@@ -1,4 +1,34 @@
-import {createUser as createUserFromApi, checkUserid as checkUseridFromApi, checkName as checkNameFromApi, login as loginFromApi} from 'api/login.js';
+import {
+  createUser as createUserFromApi, 
+  checkUserid as checkUseridFromApi, 
+  checkName as checkNameFromApi, 
+  login as loginFromApi
+} from 'api/login.js';
+
+/* Login Form */
+export function loginInputUserid(user_id) {
+  return {type: '@LOGIN_FORM/INPUT_USERID', user_id};
+}
+
+export function loginInputPassword(password) {
+  return {type: '@LOGIN_FORM/INPUT_PASSWORD', password};
+}
+
+export function loginDangerInputUserid(danger) {
+  return {type: '@LOGIN_FORM/INPUT_DANGER_USERID', danger};
+}
+
+export function loginDangerInputPassword(danger) {
+  return {type: '@LOGIN_FORM/INPUT_DANGER_PASSWORD', danger};
+}
+
+function loginOverLimit(overLimit) {
+  return {type: 'LOGIN_OVER_LIMIT', overLimit};
+}
+
+export function loginSuccess(match) {
+  return {type: 'LOGIN_SUCCESS', match};
+}
 
 /* Register Form */
 export function resetUser() {
@@ -44,15 +74,10 @@ function inputConflictName(conflict) {
 function endCreateUser(user) {
   return {type: '@REGISTER_FORM/END_CREATE_USER', user};
 }
-function loginOverLimit(overLimit) {
-  return {type: '@REGISTER_FORM/LOGIN_OVER_LIMIT', overLimit};
-}
 
-export function loginSuccess(match) {
-  return {type: '@REGISTER_FORM/LOGIN_SUCCESS', match};
-}
-
-export function checkUseridAvailability(user_id) {
+//register, login - main function exported
+//toggleRegister = {1:registering, 0:logging in}
+export function checkUseridAvailability(user_id, toggleRegister) {
   return (dispatch, getState) => {
     return checkUseridFromApi(user_id).then(user_id => {
       if (user_id && user_id.length > 0)
@@ -62,30 +87,38 @@ export function checkUseridAvailability(user_id) {
       }
     ).catch(err => {
       console.error('Error checking user_id', err);
+
     }).then(() => {
-      if (!getState().registerForm.user_id_conflict)
+      if (!getState().registerForm.user_id_conflict && toggleRegister){
         return checkNameFromApi(getState().registerForm.name);
       }
-    ).then(name => {
-      if (name && name.length > 0)
-        return dispatch(inputConflictName(true));
-      else
-        return dispatch(inputConflictName(false));
+      if(!getState().registerForm.user_id_conflict && !toggleRegister){
+        return checkNameFromApi(getState().loginForm.name);
       }
+
+    }).then(name => {
+      if(toggleRegister){
+        if (name && name.length > 0)
+          return dispatch(inputConflictName(true));
+        else
+          return dispatch(inputConflictName(false));
+        }
+      }
+
     ).then(() => {
-      if (!getState().registerForm.user_id_conflict && !getState().registerForm.name_conflict)
+      if (!getState().registerForm.user_id_conflict && !getState().registerForm.name_conflict && toggleRegister)
         return createUserFromApi(getState().registerForm.user_id, getState().registerForm.password, getState().registerForm.name);
       }
     ).then(user => {
-      if (user) {
-        //dispatch(endCreateUser(user));
+      if (user && toggleRegister) {
+        dispatch(endCreateUser(user));
         dispatch(toggleSignIn());
         dispatch(registerReset());
       }
     }).catch(err => {
       console.error('Error creating user', err);
     });
-  }
+  };
 }
 
 export function loginCookie(user_id, password) {
@@ -97,16 +130,16 @@ export function loginCookie(user_id, password) {
         return true;
       }
     }).catch(err => {
-      console.error('Error creating post', err);
+      console.error('Error in cookie', err);
     }).then((a) => {
       if (a) {
-        dispatch(listPosts(getState().searchText))
+        dispatch(listPosts(getState().searchText));
       }
-    })
+    });
   };
-};
+}
 
-export function login(user_id, password) {
+export function login(user_id, password, toggleRegister) {
   return (dispatch, getState) => {
     return loginFromApi(user_id, password).then(user => {
       if (user.length > 0) {
@@ -130,8 +163,8 @@ export function login(user_id, password) {
       console.error('Error creating post', err);
     }).then((a) => {
       if (a) {
-        dispatch(listPosts(getState().searchText))
+        dispatch(listPosts(getState().searchText));
       }
-    })
+    });
   };
-};
+}
